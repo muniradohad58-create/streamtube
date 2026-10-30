@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>User Profile</h2>
+<div style="display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 16px;">
+  <div class="auth-wrapper" style="margin: 0; max-width: 100%;">
+    <h3>Account Settings</h3>
+    <form method="POST" style="margin-top: 12px;">
+      <div class="form-group">
+        <label>Username</label>
+        <input type="text" name="username" value="{{ current_user.username }}" required>
+      </div>
+      <div class="form-group">
+        <label>Current Password (required to change password)</label>
+        <input type="password" name="current_password">
+      </div>
+      <div class="form-group">
+        <label>New Password (optional)</label>
+        <input type="password" name="new_password">
+      </div>
+      <button type="submit" class="btn btn-primary">Update Profile</button>
+    </form>
+  </div>
+
+  <div>
+    <h3>Your Uploaded Videos</h3>
+    <div style="display: flex; flex-direction: column; gap: 12px; margin-top: 12px;">
+      {% for v in user_videos %}
+        <div style="display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+          <a href="{{ url_for('videos.watch', video_id=v.id) }}" style="text-decoration: none; color: var(--text-color); font-weight: 500;">{{ v.title }}</a>
+          <a href="{{ url_for('videos.edit_video', video_id=v.id) }}" class="btn">Edit</a>
+        </div>
+      {% else %}
+        <p>You haven't uploaded any videos yet.</p>
+      {% endfor %}
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% block content %}
+<h2>Watch Later</h2>
+<div class="video-grid" style="margin-top: 16px;">
+  {% for item in items %}
+    <a href="{{ url_for('videos.watch', video_id=item.video.id) }}" class="video-card">
+      <div class="thumbnail-container">
+        <img src="{{ item.video.thumbnail_url }}" alt="{{ item.video.title }}">
+      </div>
+      <div class="video-info-card">
+        <div class="video-title-card">{{ item.video.title }}</div>
+        <div class="video-meta-card">{{ item.video.uploader.username }}</div>
+      </div>
+    </a>
+  {% else %}
+    <p>Your watchlist is empty.</p>
+  {% endfor %}
+</div>
+{% endblock %}

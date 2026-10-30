@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 16px;">
+  <h2>Watch History</h2>
+  {% if history_items %}
+    <form action="{{ url_for('videos.clear_history') }}" method="POST">
+      <button class="btn btn-danger">Clear All History</button>
+    </form>
+  {% endif %}
+</div>
+
+<div style="display: flex; flex-direction: column; gap: 12px;">
+  {% for hi in history_items %}
+    <div style="display: flex; justify-content: space-between; align-items: center; background: var(--card-bg); padding: 12px; border-radius: 8px; border: 1px solid var(--border-color);">
+      <a href="{{ url_for('videos.watch', video_id=hi.video.id) }}" style="display: flex; gap: 16px; text-decoration: none; color: var(--text-color); align-items: center; flex: 1;">
+        <div style="width: 120px; aspect-ratio: 16/9; background: #000; border-radius: 4px; overflow: hidden; flex-shrink: 0;">
+          <img src="{{ hi.video.thumbnail_url }}" style="width:100%; height:100%; object-fit:cover;">
+        </div>
+        <div>
+          <div style="font-weight: 600;">{{ hi.video.title }}</div>
+          <div style="font-size: 0.85rem; color: #888;">Watched on {{ hi.watched_at.strftime('%b %d, %Y %H:%M') }}</div>
+        </div>
+      </a>
+      <form action="{{ url_for('videos.remove_history_item', history_id=hi.id) }}" method="POST">
+        <button class="btn" style="border:none;"><i class="fa-solid fa-xmark"></i></button>
+      </form>
+    </div>
+  {% else %}
+    <p>No watch history recorded yet.</p>
+  {% endfor %}
+</div>
+{% endblock %}

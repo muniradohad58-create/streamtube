@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block content %}
+<div class="chips-bar">
+  {% for cat in categories %}
+    <a href="{{ url_for('videos.home', category=cat) }}" class="chip {% if selected_category == cat %}active{% endif %}">{{ cat }}</a>
+  {% endfor %}
+</div>
+
+<div class="video-grid">
+  {% for video in videos %}
+    <a href="{{ url_for('videos.watch', video_id=video.id) }}" class="video-card">
+      <div class="thumbnail-container">
+        <img src="{{ video.thumbnail_url or 'https://via.placeholder.com/480x360.png' }}" alt="{{ video.title }}">
+      </div>
+      <div class="video-info-card">
+        <div class="video-title-card">{{ video.title }}</div>
+        <div class="video-meta-card">{{ video.uploader.username }}</div>
+        <div class="video-meta-card">{{ video.created_at.strftime('%b %d, %Y') }}</div>
+      </div>
+    </a>
+  {% else %}
+    <p>No videos found.</p>
+  {% endfor %}
+</div>
+{% endblock %}
